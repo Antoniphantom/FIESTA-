@@ -167,6 +167,14 @@
       window.open(waUrl, '_blank');
       rsvpModal.classList.remove('show');
 
+       });
+
+    music.addEventListener('click', ()=>{
+      if(Music.src) return alert('Sube assets/music.mp3 si quieres música de fondo');
+      if(Music.paused){ Music.play().catch(()=>{}); music.textContent='Pausar música' }
+      else{Music.pause(); music.textContent='Reproducir música' }
+    });
+
     // Countdown
     const countdownEl = document.getElementById('countdown');
     function updateCountdown(){
