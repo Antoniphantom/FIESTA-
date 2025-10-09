@@ -264,36 +264,6 @@
   const audio = document.getElementById("background-music");
   const musicControl = document.getElementById("music-control");
   let isPlaying = false;
-
-  // Iniciar música tras primer toque o clic
-  const startMusic = () => {
-    if (!isPlaying) {
-      audio.play().then(() => {
-        isPlaying = true;
-        musicControl.textContent = "🔊";
-      }).catch(err => console.log("Bloqueado por navegador:", err));
-    }
-    document.removeEventListener("click", startMusic);
-    document.removeEventListener("touchstart", startMusic);
-  };
-
-  document.addEventListener("click", startMusic);
-  document.addEventListener("touchstart", startMusic);
-
-  // Alternar play/pause con el ícono
-  musicControl.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (audio.paused) {
-      audio.play().then(() => {
-        musicControl.textContent = "🔊";
-        isPlaying = true;
-      });
-    } else {
-      audio.pause();
-      musicControl.textContent = "🔇";
-      isPlaying = false;
-    }
-  });
 </script>
 
 </body>
