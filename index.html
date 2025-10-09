@@ -5,136 +5,169 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Cumpleaños de Emma — Invitación</title>
   <style>
-    :root {
+    :root{
       --bg1:#74caff; --bg2:#b6e8ff; --card-bg: rgba(255,255,255,0.96);
       --accent:#004b8a; --btn:#00aaff; --cursor-color: rgba(102,204,255,0.95);
     }
     *{box-sizing:border-box}
-    html,body{height:150%;margin:0;font-family:Inter,Poppins,system-ui,-apple-system,'Segoe UI',Roboto,Arial;}
+    html,body{height:100%;margin:0;font-family:Inter, Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;}
     body{
       background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
       overflow-y:auto; padding:24px; display:flex; align-items:center; justify-content:center;
     }
 
-    /* globos */
+    /* floating-balloon layer covers whole viewport but sits behind content */
     .balloon-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
     .balloon{position:absolute;width:48px;height:64px;border-radius:50% 50% 45% 45%;box-shadow:0 6px 18px rgba(0,0,0,0.12);}
 
-    @keyframes riseY{0%{transform:translateY(110vh)}100%{transform:translateY(-120vh)}}
+    /* subtle horizontal sway to look natural */
+    @keyframes riseY{0%{transform:translateY(110vh) translateX(0) rotate(0deg)}100%{transform:translateY(-120vh) translateX(0) rotate(360deg)}}
+    @keyframes sway{0%{transform:translateX(-12px)}50%{transform:translateX(12px)}100%{transform:translateX(-12px)}}
 
-    .card{position:relative;z-index:10;width:100%;max-width:980px;background:var(--card-bg);border-radius:18px;box-shadow:0 18px 50px rgba(9,30,63,0.18);overflow:hidden;display:grid;grid-template-columns:1fr 460px;}
+    /* main card */
+    .card{position:relative;z-index:10;width:100%;max-width:980px;background:var(--card-bg);border-radius:18px;box-shadow:0 18px 50px rgba(9,30,63,0.18);overflow:hidden;display:grid;grid-template-columns:1fr 460px;align-items:stretch;gap:0;padding:0;transform-origin:center;animation:pageIn 700ms cubic-bezier(.2,.9,.3,1)}
+    @keyframes pageIn{from{opacity:0;transform:translateY(14px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+
     .left{padding:36px 40px}
-    h1{margin:0 0 6px;font-size:34px;color:var(--accent);}
+    h1{margin:0 0 6px;font-size:34px;color:var(--accent);letter-spacing:-0.3px}
     .subtitle{margin:0 0 14px;color:#0f5472;font-weight:600}
     .message{color:#174f64;line-height:1.45;margin-bottom:14px}
-    .pill{background:rgba(255,255,255,0.86);padding:10px 14px;border-radius:12px;font-weight:700;color:#053852;}
     .info{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-    .btn{background:var(--btn);color:#fff;padding:12px 18px;border-radius:10px;border:0;font-weight:800;cursor:pointer;}
+    .pill{background:rgba(255,255,255,0.86);padding:10px 14px;border-radius:12px;font-weight:700;color:#053852;border:1px solid rgba(2,56,84,0.03)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .btn{background:var(--btn);color:#fff;padding:12px 18px;border-radius:10px;border:0;font-weight:800;cursor:pointer;box-shadow:0 8px 26px rgba(0,160,255,0.16)}
     .btn.secondary{background:transparent;color:var(--accent);border:2px solid rgba(0,75,138,0.08)}
     .footer-note{font-size:13px;color:#0d5e7b;margin-top:14px}
-    .right{display:flex;align-items:center;justify-content:center;padding:28px;}
-    .stitch-wrap{width:92%;max-width:420px;height:auto;border-radius:16px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), rgba(255,255,255,0.7));padding:12px;}
-    .stitch{width:100%;height:auto;max-width:360px;object-fit:contain;}
 
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.36);z-index:60}
+    /* right panel with stitch GIF */
+    .right{display:flex;align-items:center;justify-content:center;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));position:relative}
+    .stitch-wrap{width:92%;max-width:420px;height:auto;border-radius:16px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), rgba(255,255,255,0.7));padding:12px;box-shadow:inset 0 -6px 30px rgba(0,0,0,0.04);}
+    .stitch{width:100%;height:auto;max-width:360px;max-height:70vh;object-fit:contain;animation:float 4s ease-in-out infinite 200ms;opacity:0;transform:translateY(10px) scale(.98);animation-name:float,fadeBounce;animation-duration:4s,700ms;animation-timing-function:ease-in-out,cubic-bezier(.2,.9,.3,1);animation-iteration-count:infinite,1;animation-fill-mode:both}
+    @keyframes float{0%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}100%{transform:translateY(0) rotate(-2deg)}}
+    @keyframes fadeBounce{0%{opacity:0;transform:translateY(20px) scale(.95)}60%{opacity:1;transform:translateY(-6px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* countdown */
+    .countdown{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+    .unit{background:rgba(0,91,181,0.07);padding:8px 10px;border-radius:8px;font-weight:800;color:#053f55}
+
+    /* modal RSVP */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.36),rgba(0,0,0,0.36));z-index:60}
     .modal.show{display:flex}
-    .modal-card{background:#fff;padding:18px;border-radius:12px;width:92%;max-width:420px;}
+    .modal-card{background:#fff;padding:18px;border-radius:12px;width:92%;max-width:420px;box-shadow:0 18px 40px rgba(0,0,0,0.25)}
+    .modal-card h3{margin:0 0 8px}
+    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #d6d6d6;margin-top:8px}
 
-    /* Botón música */
-    #music-control{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      background:rgba(255,255,255,0.7);
-      border-radius:50%;
-      padding:12px;
-      font-size:22px;
-      cursor:pointer;
-      box-shadow:0 0 10px rgba(0,0,0,0.2);
-      z-index:9999;
-      backdrop-filter:blur(5px);
-      transition:transform .3s ease, box-shadow .3s ease;
-    }
-    #music-control.playing{
-      animation:glowPulse 2s infinite;
-      box-shadow:0 0 15px rgba(0,170,255,0.5);
-    }
-    @keyframes glowPulse {
-      0%{transform:scale(1);}
-      50%{transform:scale(1.1);}
-      100%{transform:scale(1);}
-    }
+    /* custom cursor */
+    #cursor{position:fixed;top:0;left:0;width:26px;height:26px;border-radius:50%;pointer-events:none;z-index:9999;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 30%, rgba(102,204,255,0.95) 60%, rgba(102,204,255,0.7) 100%);box-shadow:0 0 18px 6px rgba(102,204,255,0.15);transform:translate(-50%,-50%);mix-blend-mode:screen;animation:cursorPulse 1.6s infinite}
+    @keyframes cursorPulse{0%{transform:translate(-50%,-50%) scale(0.9)}50%{transform:translate(-50%,-50%) scale(1.25)}100%{transform:translate(-50%,-50%) scale(0.9)}}
 
-    @media(max-width:920px){
- .actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.actions .btn {
-  flex: 1 1 200px;
-  text-align: center;
-}
+    /* responsive adjustments */
+    @media (max-width:920px){
+      .card{grid-template-columns:1fr;max-width:720px}
+      .right{padding:20px}
+      .stitch-wrap{max-width:320px}
+    }
+    @media (max-width:520px){
+      body{padding:14px}
+      .left{padding:20px}
+      h1{font-size:28px}
+      .stitch-wrap{max-width:280px}
+      #cursor{width:38px;height:38px}
+    }
   </style>
 </head>
 <body>
 
-  <div class="balloon-layer"></div>
+  <!-- Balloon background layer (generated by JS) -->
+  <div class="balloon-layer" aria-hidden="true"></div>
 
-  <main class="card">
+  <main class="card" role="main" aria-labelledby="title">
     <section class="left">
-      <h1>¡Emma cumple 7 años! 💙</h1>
-      <p class="subtitle">Te quiere invitar a su fiesta de cumpleaños</p>
-      <p class="message">Ven a celebrarlos, con una tarde llena de muchas sorpresas.</p>
-      <p class="message">¡No olvides las de ganas de divertirte! </p>
-      
-      <div class="info">
+      <h1 id="title">¡Emma cumple 7 años! 💙</h1>
+      <p class="subtitle">Te quiere invitar a su fiesta de cumpleaños</strong></p>
+      <p class="message">Ven a celebrarlos, </strong> con una tarde llena de muchas sorpresas.
+      <p class="message"> ¡No olvides tus ganas de divertirte! </p>
+
+      <div class="info" aria-hidden>
         <div class="pill">📅 22 de noviembre</div>
         <div class="pill">⏰ 3:00 PM</div>
         <div class="pill">📍 Salón de Fiestas Crayola</div>
       </div>
+
+      <div class="countdown" id="countdown" aria-live="polite"></div>
+
       <div class="actions">
-      </div>
-    </div>
         <button class="btn" id="rsvpBtn">Confirmar asistencia</button>
+        <a class="btn secondary" id="mapBtn" href="#" target="_blank" rel="noopener">Ver ubicación</a>
+        <button class="btn secondary" id="musicToggle">Reproducir / Pausar música</button>
       </div>
-    </div>
-         </div>
-        <a class="btn secondary" href="https://maps.app.goo.gl/AMiKh5sTBxUDgbB4A" target="_blank">Ver ubicación</a>
-      </div>
-         </div>
-    </div>
-      <p class="footer-note">Dirección:Carr. Guanajuato - Juventino Rosas Km. 7, Frente a Chevrolet de Guanajuato, esquina almacén de la SEG, Col. Arroyo Verde, 36250 Guanajuato, Gto. México, 36251 Guanajuato, Gto.</p>
+
+      <p class="footer-note">Dirección: Calle Eucalipto 4, casi esquina Blvd. Euquerio Guerrero, 36257 Guanajuato Centro, México</p>
     </section>
 
-    <aside class="right">
+    <aside class="right" aria-hidden="true">
       <div class="stitch-wrap">
-        <img src="stitch.gif" alt="Stitch bailando" class="stitch">
+        <!-- Asegúrate de subir assets/stitch-dance.gif en tu repo -->
+        <img src="stitch.gif" alt="Stitch bailando" class="stitch" onerror="this.style.display='none'">
       </div>
     </aside>
   </main>
 
-  <!-- Modal -->
-  <div class="modal" id="rsvpModal">
+  <!-- RSVP Modal -->
+  <div class="modal" id="rsvpModal" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
     <div class="modal-card">
-      <h3>Confirmar asistencia</h3>
-      <label>Tu nombre:</label>
-      <input id="guestName" placeholder="Ej. Marco" />
-      <label>¿Cuántas personas asistirán?</label>
+      <h3 id="rsvpTitle">Confirmar asistencia</h3>
+      <label for="guestName">Tu nombre:</label>
+      <input id="guestName" placeholder="Escribe tu nombre (ej. Marco)" />
+      <label for="guestCount">¿Cuántas personas asistirán?</label>
       <select id="guestCount">
-        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
       <div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end">
-        <button class="btn" id="sendRSVP">Enviar</button>
-        <button class="btn secondary" id="cancelRSVP">Cancelar</button>
+        <button class="btn" id="sendRSVP">Enviar confirmación</button>
+        <button class="btn secondary" id="cancelSend">Cancelar</button>
       </div>
     </div>
   </div>
 
-  <!-- Música -->
+  <div id="cursor" aria-hidden="true"></div>
+
+  <script>
+    // ---------- Config ----------
+    const CONFIG = {
+      dateISO: '2025-11-22T15:00:00',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Calle+Eucalipto+4+Guanajuato',
+      whatsapp: '+524731017671'
+    };
+
+    // Basic UI hooks
+    const mapBtn = document.getElementById('mapBtn');
+    const rsvpBtn = document.getElementById('rsvpBtn');
+    const rsvpModal = document.getElementById('rsvpModal');
+    const cancelSend = document.getElementById('cancelSend');
+    const sendRSVP = document.getElementById('sendRSVP');
+    const musicToggle = document.getElementById('musicToggle');
+    const bgMusic = document.getElementById('bgMusic');
+
+    mapBtn.href = CONFIG.mapsUrl;
+    rsvpBtn.addEventListener('click', ()=> rsvpModal.classList.add('show'));
+    cancelSend.addEventListener('click', ()=> rsvpModal.classList.remove('show'));
+
+    sendRSVP.addEventListener('click', ()=> {
+      const name = document.getElementById('guestName').value.trim();
+      const count = document.getElementById('guestCount').value;
+      if(!name){ alert('Por favor escribe tu nombre'); return }
+      const text = `Hola, soy ${name} y confirmo asistencia al Cumpleaños de Emma. Seremos ${count} personas 🎈`;
+      const waUrl = `https://wa.me/${CONFIG.whatsapp.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      rsvpModal.classList.remove('show');
+
+    <!-- Música -->
   <audio id="background-music" src="music.mp3" loop preload="auto"></audio>
   <div id="music-control">🔇</div>
 
@@ -195,3 +228,4 @@
   </script>
 </body>
 </html>
+
