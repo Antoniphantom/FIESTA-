@@ -1,181 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Cumpleaños de Emma — Invitación</title>
-  <style>
-    :root {
-      --bg1:#74caff; --bg2:#b6e8ff; --card-bg: rgba(255,255,255,0.96);
-      --accent:#004b8a; --btn:#00aaff; --cursor-color: rgba(102,204,255,0.95);
-    }
-    *{box-sizing:border-box}
-    html,body{height:150%;margin:0;font-family:Inter,Poppins,system-ui,-apple-system,'Segoe UI',Roboto,Arial;}
-    body{
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      overflow-y:auto; padding:24px; display:flex; align-items:center; justify-content:center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Cumple de Emma!</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Comic Sans MS', cursive;
+    background-color: #bdeeff;
+    position: relative;
+    height: 100vh;
+    color: #004aad;
+    text-align: center;
+  }
 
-    /* globos */
-    .balloon-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-    .balloon{position:absolute;width:48px;height:64px;border-radius:50% 50% 45% 45%;box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+  .container {
+    position: relative;
+    z-index: 10;
+    padding: 40px 20px;
+  }
 
-    @keyframes riseY{0%{transform:translateY(110vh)}100%{transform:translateY(-120vh)}}
+  h1 {
+    font-size: 2.5em;
+    color: #0077cc;
+  }
 
-    .card{position:relative;z-index:10;width:100%;max-width:980px;background:var(--card-bg);border-radius:18px;box-shadow:0 18px 50px rgba(9,30,63,0.18);overflow:hidden;display:grid;grid-template-columns:1fr 460px;}
-    .left{padding:36px 40px}
-    h1{margin:0 0 6px;font-size:34px;color:var(--accent);}
-    .subtitle{margin:0 0 14px;color:#0f5472;font-weight:600}
-    .message{color:#174f64;line-height:1.45;margin-bottom:14px}
-    .pill{background:rgba(255,255,255,0.86);padding:10px 14px;border-radius:12px;font-weight:700;color:#053852;}
-    .info{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-    .btn{background:var(--btn);color:#fff;padding:12px 18px;border-radius:10px;border:0;font-weight:800;cursor:pointer;}
-    .btn.secondary{background:transparent;color:var(--accent);border:2px solid rgba(0,75,138,0.08)}
-    .footer-note{font-size:13px;color:#0d5e7b;margin-top:14px}
-    .right{display:flex;align-items:center;justify-content:center;padding:28px;}
-    .stitch-wrap{width:92%;max-width:420px;height:auto;border-radius:16px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), rgba(255,255,255,0.7));padding:12px;}
-    .stitch{width:100%;height:auto;max-width:360px;object-fit:contain;}
+  .details {
+    font-size: 1.2em;
+    margin-top: 10px;
+    color: #003366;
+  }
 
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.36);z-index:60}
-    .modal.show{display:flex}
-    .modal-card{background:#fff;padding:18px;border-radius:12px;width:92%;max-width:420px;}
+  .gif-stitch {
+    width: 280px;
+    margin: 20px auto;
+    display: block;
+  }
 
-    /* Botón música */
-    #music-control{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      background:rgba(255,255,255,0.7);
-      border-radius:50%;
-      padding:12px;
-      font-size:22px;
-      cursor:pointer;
-      box-shadow:0 0 10px rgba(0,0,0,0.2);
-      z-index:9999;
-      backdrop-filter:blur(5px);
-      transition:transform .3s ease, box-shadow .3s ease;
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .actions .btn {
+    flex: 1 1 200px;
+    text-align: center;
+  }
+
+  .btn {
+    background-color: #ff80c0;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background-color 0.3s;
+  }
+
+  .btn:hover {
+    transform: scale(1.05);
+    background-color: #ff4da6;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+  }
+
+  .balloon {
+    position: absolute;
+    bottom: -100px;
+    border-radius: 50%;
+    opacity: 0.9;
+    animation: float 6s ease-in infinite;
+  }
+
+  @media(max-width: 600px) {
+    .actions {
+      flex-direction: column;
+      align-items: stretch;
     }
-    #music-control.playing{
-      animation:glowPulse 2s infinite;
-      box-shadow:0 0 15px rgba(0,170,255,0.5);
-    }
-    @keyframes glowPulse {
-      0%{transform:scale(1);}
-      50%{transform:scale(1.1);}
-      100%{transform:scale(1);}
-    }
+  }
 
-    @media(max-width:920px){
-      .card{grid-template-columns:1fr;max-width:720px}
-    }
-  </style>
+  /* Efecto del cursor luminoso */
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(0,200,255,0.3) 60%);
+    mix-blend-mode: screen;
+    z-index: 10000;
+  }
+</style>
 </head>
 <body>
 
-  <div class="balloon-layer"></div>
+<div class="cursor"></div>
 
-  <main class="card">
-    <section class="left">
-      <h1>¡Emma cumple 7 años! 💙</h1>
-      <p class="subtitle">Te quiere invitar a su fiesta de cumpleaños</p>
-      <p class="message">Ven a celebrarlos con una tarde llena de muchas sorpresas.</p>
-      <p class="message">¡No olvides tus ganas de divertirte!.</p>
-      
-      <div class="info">
-        <div class="pill">📅 22 de noviembre</div>
-        <div class="pill">⏰ 3:00 PM</div>
-        <div class="pill">📍 Salón de Fiestas Crayola</div>
-      </div>
-      <div class="actions">
-        <button class="btn" id="rsvpBtn">Confirmar asistencia</button>
-        <a class="btn secondary" href="https://maps.app.goo.gl/AMiKh5sTBxUDgbB4A" target="_blank">Ver ubicación</a>
-      </div>
-      <p class="footer-note">Dirección: Carr. Guanajuato - Juventino Rosas Km. 7, Frente a Chevrolet de Guanajuato, esquina almacén de la SEG, Col. Arroyo Verde, 36250 Guanajuato, Gto. México, 36251 Guanajuato, Gto.</p>
-    </section>
+<div class="container">
+  <h1>🎉 ¡Cumple de Emma! 🎂</h1>
+  <p class="details">¡Emma cumple 7 años y te invita a su fiesta!</p>
+  <img src="1000302162.jpg" alt="Stitch" class="gif-stitch">
+  <p class="details">📅 <strong>22 de noviembre</strong> | 🕒 3:00 PM</p>
+  <p class="details">📍 Salón de Fiestas Crayola<br>
+  Calle Eucalipto 4, casi esquina Blvd. Euquerio Guerrero<br>
+  36257 Guanajuato Centro, México</p>
 
-    <aside class="right">
-      <div class="stitch-wrap">
-        <img src="stitch.gif" alt="Stitch bailando" class="stitch">
-      </div>
-    </aside>
-  </main>
-
-  <!-- Modal -->
-  <div class="modal" id="rsvpModal">
-    <div class="modal-card">
-      <h3>Confirmar asistencia</h3>
-      <label>Tu nombre:</label>
-      <input id="guestName" placeholder="Ej. Marco" />
-      <label>¿Cuántas personas asistirán?</label>
-      <select id="guestCount">
-        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-      </select>
-      <div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end">
-        <button class="btn" id="sendRSVP">Enviar</button>
-        <button class="btn secondary" id="cancelRSVP">Cancelar</button>
-      </div>
-    </div>
+  <div class="actions">
+    <button class="btn" onclick="abrirUbicacion()">📍 Ver ubicación</button>
+    <button class="btn" onclick="abrirConfirmacion()">✅ Confirmar asistencia</button>
+    <button class="btn" onclick="toggleMusic()">🎵 Pausar / Reproducir Música</button>
   </div>
+</div>
 
-  <!-- Música -->
-  <audio id="background-music" src="music.mp3" loop preload="auto"></audio>
-  <div id="music-control">🔇</div>
+<audio id="bgMusic" autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
 
-  <script>
-    const balloonLayer = document.querySelector('.balloon-layer');
-    const colors = ['#ff6f91','#ff9671','#ffc75f','#f9f871','#6ddccf','#6ecbff','#c77dff'];
-    for(let i=0;i<20;i++){
-      const b=document.createElement('div');
-      b.className='balloon';
-      const c=colors[Math.floor(Math.random()*colors.length)];
-      b.style.background=`linear-gradient(180deg,${c},rgba(255,255,255,0.2))`;
-      b.style.left=Math.random()*100+'%';
-      b.style.animation=`riseY ${10+Math.random()*8}s linear ${Math.random()*4}s infinite`;
-      balloonLayer.appendChild(b);
+<!-- Modal -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:999;">
+  <div style="background:white; padding:20px; border-radius:20px; width:90%; max-width:400px;">
+    <h2>Confirmar asistencia</h2>
+    <p>Por favor indica cuántas personas asistirán:</p>
+    <input id="nombre" placeholder="Tu nombre" style="width:90%; padding:8px; margin:6px;">
+    <input id="personas" type="number" placeholder="Número de personas" style="width:90%; padding:8px; margin:6px;">
+    <button class="btn" onclick="enviarConfirmacion()">Enviar</button>
+    <button class="btn" style="background-color:#aaa;" onclick="cerrarModal()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  // 🎈 Crear globos dinámicos
+  const colors = ["#ff3fa4", "#ff66cc", "#00c3ff", "#ffb347", "#8b5cf6"];
+  for (let i = 0; i < 25; i++) {
+    let balloon = document.createElement("div");
+    let size = Math.random() * 40 + 20 + "px";
+    balloon.classList.add("balloon");
+    balloon.style.width = size;
+    balloon.style.height = size;
+    balloon.style.left = Math.random() * 100 + "%";
+    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    balloon.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    document.body.appendChild(balloon);
+  }
+
+  // 🎵 Música
+  const music = document.getElementById("bgMusic");
+  let isPlaying = true;
+
+  function toggleMusic() {
+    if (music.paused) {
+      music.play();
+      isPlaying = true;
+    } else {
+      music.pause();
+      isPlaying = false;
     }
+  }
 
-    const rsvpModal=document.getElementById('rsvpModal');
-    document.getElementById('rsvpBtn').onclick=()=>rsvpModal.classList.add('show');
-    document.getElementById('cancelRSVP').onclick=()=>rsvpModal.classList.remove('show');
-    document.getElementById('sendRSVP').onclick=()=>{
-      const name=document.getElementById('guestName').value.trim();
-      const count=document.getElementById('guestCount').value;
-      if(!name){alert("Por favor escribe tu nombre");return;}
-      const msg=`Hola, soy ${name} y confirmo asistencia al Cumpleaños de Emma. Seremos ${count} personas 🎈`;
-      window.open(`https://wa.me/524731017671?text=${encodeURIComponent(msg)}`,"_blank");
-      rsvpModal.classList.remove('show');
-    };
+  // 🎯 Enlaces y modal
+  function abrirUbicacion() {
+    window.open("https://maps.app.goo.gl/AMiKh5sTBxUDgbB4A", "_blank");
+  }
 
-    // 🎵 Control música
-    const audio=document.getElementById("background-music");
-    const control=document.getElementById("music-control");
-    let playing=false;
+  function abrirConfirmacion() {
+    document.getElementById("modal").style.display = "flex";
+  }
 
-    const startMusic=()=>{
-      audio.play().then(()=>{
-        playing=true;
-        control.textContent="🔊";
-        control.classList.add("playing");
-      }).catch(e=>console.log("Bloqueado:",e));
-      document.removeEventListener("click",startMusic);
-      document.removeEventListener("touchstart",startMusic);
-    };
-    document.addEventListener("click",startMusic);
-    document.addEventListener("touchstart",startMusic);
+  function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+  }
 
-    control.addEventListener("click",e=>{
-      e.stopPropagation();
-      if(audio.paused){
-        audio.play();
-        control.textContent="🔊";
-        control.classList.add("playing");
-      }else{
-        audio.pause();
-        control.textContent="🔇";
-        control.classList.remove("playing");
-      }
-    });
-  </script>
+  function enviarConfirmacion() {
+    const nombre = document.getElementById("nombre").value;
+    const personas = document.getElementById("personas").value;
+    if (!nombre || !personas) {
+      alert("Por favor completa los campos.");
+      return;
+    }
+    const mensaje = `Hola, soy ${nombre}. Confirmo la asistencia de ${personas} persona(s) al cumple de Emma 🎉`;
+    window.open(`https://wa.me/524731017671?text=${encodeURIComponent(mensaje)}`, "_blank");
+    cerrarModal();
+  }
+
+  // ✨ Cursor luminoso
+  const cursor = document.querySelector('.cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+</script>
+
 </body>
 </html>
