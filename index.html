@@ -103,7 +103,7 @@
         <button class="btn secondary" id="musicToggle">Reproducir / Pausar música</button>
       </div>
 
-      <p class="footer-note">Dirección: Calle Eucalipto 4, casi esquina Blvd. Euquerio Guerrero, 36257 Guanajuato Centro, México</p>
+      <p class="footer-note">Carr. Guanajuato - Juventino Rosas Km. 7, Frente a Chevrolet de Guanajuato, esquina almacén de la SEG, Col. Arroyo Verde, 36250 Guanajuato, Gto. México, 36251 Guanajuato, Gto.</p>
     </section>
 
     <aside class="right" aria-hidden="true">
@@ -166,13 +166,6 @@
       const waUrl = `https://wa.me/${CONFIG.whatsapp.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank');
       rsvpModal.classList.remove('show');
-    });
-
-    musicToggle.addEventListener('click', ()=>{
-      if(!bgMusic.src) return alert('Sube music.mp3 si quieres música de fondo');
-      if(bgMusic.paused){ bgMusic.play().catch(()=>{}); musicToggle.textContent='Pausar música' }
-      else{ bgMusic.pause(); musicToggle.textContent='Reproducir música' }
-    });
 
     // Countdown
     const countdownEl = document.getElementById('countdown');
